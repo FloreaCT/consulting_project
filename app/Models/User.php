@@ -12,6 +12,18 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function isAdmin()
+    {
+        $isAdmin = substr($this->controlstring, 19, 1);
+        return $isAdmin === '1';
+    }
+
+    public function isNotAdmin()
+    {
+        $isAdmin = substr($this->controlstring, 19, 1);
+        return $isAdmin === '0';
+    }
+
     /**
      * The attributes that are mass assignable.
      *

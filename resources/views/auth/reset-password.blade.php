@@ -1,5 +1,24 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+@extends ('layout')
+
+
+@section('content')
+  <!-- Hero START -->
+  <div class="relative flex flex-col h-100 overflow-hidden">
+  <video src="../storage/herovideo.mp4" class="video absolute h-100 max-md:h-[100%] w-[100svw] object-cover scale-150 origin-center" loop muted autoplay></video>
+  <div class="overlay relative flex flex-col">
+      <!-- Heading - START -->
+      <div class="my-8 text-center">
+        <h1 class="font-bold text-3xl">Reset Password</h1>
+      </div>
+      <!-- Heading - END -->
+    </div>
+  </div>
+  <!-- Hero END -->
+
+  <!-- Register - START -->
+  <div class="flex flex-col py-6">
+    
+  <form method="POST" action="{{ route('password.store') }}" class="flex flex-col sm:w-4/5 max-sm:w-[100%] max-w-[998px] mx-auto p-4">
         @csrf
 
         <!-- Password Reset Token -->
@@ -36,4 +55,6 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+
+    </div>
+    @endsection

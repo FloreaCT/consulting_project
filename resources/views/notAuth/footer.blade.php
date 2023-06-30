@@ -374,21 +374,46 @@
                 <path d="M23.4917 15.5L32.4917 24.5L23.4917 33.5" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path>
               </g>
             </svg></span> Payments</a>
- 
-          </div>
+
+      </div>
 
       <div class="flex flex-col p-2">
         <p class="font-bold">Newsletter</p>
-        
-        <form action="/" method="POST" class="relative flex justify-between navButton font-[600]mb-2" x-data="{ email: '' }">
+
+        <form novalidate onsubmit="submitForm(event)" action="{{ route('newsletter-form') }}" id="newsletterForm" name="newsletterForm" method="POST" class="relative flex justify-between navButton font-[600] mb-2" x-data="{ email: '' }">
           @csrf
           <input type="email" name="email" class="rounded-l p-2 w-[100%] text-black" placeholder="Your Email" required x-model="email">
           <button type="submit" class="bg-[#f08409] rounded-r h-100 w-10" x-show="email.trim() !== ''">
-            <svg class="h-100 w-100" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#f08409da" stroke-width="1.248"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8.29289 4.29289C8.68342 3.90237 9.31658 3.90237 9.70711 4.29289L16.7071 11.2929C17.0976 11.6834 17.0976 12.3166 16.7071 12.7071L9.70711 19.7071C9.31658 20.0976 8.68342 20.0976 8.29289 19.7071C7.90237 19.3166 7.90237 18.6834 8.29289 18.2929L14.5858 12L8.29289 5.70711C7.90237 5.31658 7.90237 4.68342 8.29289 4.29289Z" fill="#ffffff"></path> </g></svg>
+            <svg class="h-100 w-100" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#f08409da" stroke-width="1.248">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.29289 4.29289C8.68342 3.90237 9.31658 3.90237 9.70711 4.29289L16.7071 11.2929C17.0976 11.6834 17.0976 12.3166 16.7071 12.7071L9.70711 19.7071C9.31658 20.0976 8.68342 20.0976 8.29289 19.7071C7.90237 19.3166 7.90237 18.6834 8.29289 18.2929L14.5858 12L8.29289 5.70711C7.90237 5.31658 7.90237 4.68342 8.29289 4.29289Z" fill="#ffffff"></path>
+              </g>
+            </svg>
           </button>
         </form>
 
-              <span class="border-b-2 my-4"></span>
+   @if(session('newsletter_success'))
+      <script>
+         alert('{{ session('newsletter_success') }}');
+    </script>
+      @endif
+    @if ($errors->has('newsletter_error'))
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->get('newsletter_error') as $error)
+                <script>
+                    alert("{{ $error }}");
+                </script>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+
+
+        <span class="border-b-2 my-4"></span>
 
         <a href="/termsofservice" class="inline-flex trasition duration-300 hover:scale-[0.96]">
           <span><svg width="24px" height="24px" viewBox="-4.8 -4.8 57.60 57.60" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)">
@@ -425,8 +450,8 @@
                 <path d="M23.4917 15.5L32.4917 24.5L23.4917 33.5" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path>
               </g>
             </svg></span> Legal</a>
- 
-          </div>
+
+      </div>
     </div>
 
     <div class="flex flex-wrap justify-around p-4">
@@ -510,4 +535,43 @@
     </div>
   </div>
 </div>
+{{-- 
+<script>
+  function submitForm(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const form = event.target; // Get the form element
+    const email = form.email.value; // Access the email input value
+
+    // Create a new FormData object
+    const formData = new FormData();
+    formData.append('email', email); // Append the email value to the formData
+
+    // Append the CSRF token to the formData
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    formData.append('_token', csrfToken);
+    // Send a POST request to the server using AJAX
+    fetch('/newsletter-form', {
+        method: 'POST',
+        body: formData,
+
+      })
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        if (data.success) {
+          // Display the success message
+          alert('You have subscribed to the newsletter!')
+        } else {
+          // Handle any other response or errors
+
+        }
+      })
+      .catch(error => {
+        alert('You are already subscribed!')
+      });
+  }
+</script> --}}
+
 <!-- Footer END -->

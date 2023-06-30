@@ -28,6 +28,7 @@
                 <a  @click="isActive = !isActive" href="/plans" class="h-16 w-[40vw] text-center flex items-center justify-center text-xl font-bold shadow-xl border-b-2 border-b-[--c2] hover:bg-[--c2] transition rounded" >Plans</a>
                 <a  @click="isActive = !isActive" href="/contact" class="h-16 w-[40vw] text-center flex items-center justify-center text-xl font-bold shadow-xl border-b-2 border-b-[--c2] hover:bg-[--c2] transition rounded" >Contact</a>
                 <a  @click="isActive = !isActive" href="/about" class="h-16 w-[40vw] text-center flex items-center justify-center text-xl font-bold shadow-xl border-b-2 border-b-[--c2] hover:bg-[--c2] transition rounded" >About</a>
+                <a  @click="isActive = !isActive" href="/download" class="{{ Route::currentRouteName() === 'download' ? 'isActive' : '' }} h-16 w-[40vw] text-center flex items-center justify-center text-xl font-bold shadow-xl border-b-2 border-b-[--c2] hover:bg-[--c2] transition rounded" >Download</a>
             </div>
 
         </div>
@@ -53,7 +54,7 @@
                     <span
                         class="absolute bg-white inset-0 z-10 rounded"
                     ></span>
-                    <span class="z-20 relative">Plans</span>
+                    <span class="z-20 relative">Pricing</span>
                 </a>
                 <a class="p-2 relative navButton font-[600]" href="/contact">
                     <span
@@ -66,6 +67,12 @@
                         class="absolute bg-white inset-0 z-10 rounded"
                     ></span>
                     <span class="z-20 relative">About</span>
+                </a>
+                <a class="p-2 relative navButton font-[600]" href="/download">
+                    <span
+                        class="absolute bg-white inset-0 z-10 rounded"
+                    ></span>
+                    <span class="z-20 relative">Download</span>
                 </a>
             </ul>
         </div>

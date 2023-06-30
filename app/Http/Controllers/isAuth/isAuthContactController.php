@@ -8,10 +8,9 @@ use Illuminate\Http\Request;
 
 class isAuthContactController extends Controller
 {
-    public function get() {
-
+    public function get() 
+    {
         // to grab user list of contacts and/or addresses where user sent a package(even if not added to contact) - good? :D
-        $contacts = [];
-        return view("isauth.contact", ['contacts' => $contacts]);
+        return view("isauth.contact");
     }
 }

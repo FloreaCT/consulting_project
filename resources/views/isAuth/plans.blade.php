@@ -11,7 +11,6 @@
       <!-- Heading - START -->
       <div class="my-8 text-center">
         <h1 class="font-bold text-3xl">Plans</h1>
-        <p>Upgrade your plan to unlock premium features and enjoy enhanced benefits.</p>
 
       </div>
       <!-- Heading - END -->
@@ -54,48 +53,11 @@
         <div class="flex flex-col text-center flex-nowrap ">
           <!-- Personal Billing Cards - START -->
           <div class="grid grid-cols-4 gap-8 m-4 min-w-[860px]">
-            <!-- Plan Card - START-->
-            <div class="flex flex-col shadow-xl p-4 z-10 relative min-w-[160px] flex-nowrap">
-              <p class="text-xl font-bold">Top-up</p>
-              <p class="text-xs">Unsure? <br>Pay only for what you use.</p>
-              <p class="border-b-2 my-4"></p>
-              <p class="text-xl font-bold">Pay As You Go</p>
-              <p class="border-b-2 my-4"></p>
-              <div class="flex flex-col items-start flex-nowrap grow text-start">
-                <p class="inline-flex whitespace-nowrap"><svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color whitespace-nowrap flex-nowrap">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <circle id="primary" cx="12" cy="12" r="10" style="fill: #ff943d;"></circle>
-                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #e64100;"></path>
-                    </g>
-                  </svg><span>Max Size 10MB</span></p>
-                <p class="inline-flex whitespace-nowrap"><svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color whitespace-nowrap flex-nowrap">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <circle id="primary" cx="12" cy="12" r="10" style="fill: #ff943d;"></circle>
-                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #e64100;"></path>
-                    </g>
-                  </svg><span>Single File</span></p>
-                <p class="inline-flex whitespace-nowrap"><svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-colo whitespace-nowrap flex-nowrapr">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <circle id="primary" cx="12" cy="12" r="10" style="fill: #ff943d;"></circle>
-                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #e64100;"></path>
-                    </g>
-                  </svg><span>Normal Delivery</span></p>
-              </div>
-              <p class="border-b-2 my-4"></p>
-              @include('components.subscribeTemplate')
-            </div>
-            <!-- Plan Card - END-->
             @foreach ($plans as $plan)
-            @if (Str::startsWith($plan->name, 'Personal'))
+            @if (Str::startsWith($plan->type, 'Personal'))
             <!-- Plan Card - START-->
             <div class="flex flex-col shadow-xl p-4 z-10 relative min-w-[160px] flex-nowrap">
-              <p class="text-xl font-bold">
+              <p class="text-xl font-bold whitespace-nowrap">
                 {{ $plan['name'] }}
               </p>
               <p class="text-xs">
@@ -103,30 +65,35 @@
               </p>
               <p class="border-b-2 my-4"></p>
               <p class="text-3xl font-bold">
+                @if($plan['price'] == 0)
+                <span class="text-lg">Pay As You Go</span>
+                @else
                 <span class="text-base">£</span>
                 <template x-if="isMonthly">
-                  <span x-text=" {{ $plan['price'] }}"></span>/month
+                  <span x-text="{{ $plan['price'] }}"></span>/month
                 </template>
                 <template x-if="!isMonthly">
-                  <span x-text=" {{ $plan['price'] }} * 12"></span>/year
+                  <span x-text="{{ $plan['price'] }} * 12"></span>/year
                 </template>
+                @endif
               </p>
               <p class="border-b-2 my-4"></p>
               <div class="flex flex-col items-start  text-start grow">
                 @foreach (json_decode($plan['options']) as $option)
-                <p class="inline-flex"><svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+                <p class="grid grid-cols-[24px_1fr]">
+                  <svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
                       <circle id="primary" cx="12" cy="12" r="10" style="fill: #ff943d;"></circle>
-                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #e64100;"></path>
+                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #fff;"></path>
                     </g>
                   </svg><span>
                     {{ $option }}</span></p>
                 @endforeach
               </div>
               <p class="border-b-2 my-4"></p>
-              @include('components.subscribeTemplate')
+              @include('components.subscribeTemplate', ['plan' => $plan['name'], 'type' => $plan['type'] ] )
             </div>
             <!-- Plan Card - END-->
             @endif
@@ -144,48 +111,11 @@
         <div class="flex flex-col text-center flex-nowrap ">
           <!-- Bussiness Billing Cards - START -->
           <div class="grid grid-cols-4 gap-8 m-4 min-w-[860px]">
-            <!-- Plan Card - START-->
-            <div class="flex flex-col shadow-xl p-4 z-10 relative min-w-[160px] flex-nowrap">
-              <p class="text-xl font-bold">Top-up</p>
-              <p class="text-xs">Unsure? <br>Pay only for what you use.</p>
-              <p class="border-b-2 my-4"></p>
-              <p class="text-xl font-bold">Pay As You Go</p>
-              <p class="border-b-2 my-4"></p>
-              <div class="flex flex-col items-start flex-nowrap grow text-start">
-                <p class="inline-flex whitespace-nowrap"><svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color whitespace-nowrap flex-nowrap">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <circle id="primary" cx="12" cy="12" r="10" style="fill: #ff943d;"></circle>
-                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #e64100;"></path>
-                    </g>
-                  </svg><span>Max Size 10MB</span></p>
-                <p class="inline-flex whitespace-nowrap"><svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color whitespace-nowrap flex-nowrap">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <circle id="primary" cx="12" cy="12" r="10" style="fill: #ff943d;"></circle>
-                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #e64100;"></path>
-                    </g>
-                  </svg><span>Single File</span></p>
-                <p class="inline-flex whitespace-nowrap"><svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-colo whitespace-nowrap flex-nowrapr">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <circle id="primary" cx="12" cy="12" r="10" style="fill: #ff943d;"></circle>
-                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #e64100;"></path>
-                    </g>
-                  </svg><span>Normal Delivery</span></p>
-              </div>
-              <p class="border-b-2 my-4"></p>
-              @include('components.subscribeTemplate')
-            </div>
-            <!-- Plan Card - END-->
             @foreach ($plans as $plan)
-            @if (Str::startsWith($plan->name, 'Business'))
+            @if (Str::startsWith($plan->type, 'Business'))
             <!-- Plan Card - START-->
             <div class="flex flex-col shadow-xl p-4 z-10 relative min-w-[160px] flex-nowrap">
-              <p class="text-xl font-bold">
+              <p class="text-xl font-bold whitespace-nowrap">
                 {{ $plan['name'] }}
               </p>
               <p class="text-xs">
@@ -193,30 +123,36 @@
               </p>
               <p class="border-b-2 my-4"></p>
               <p class="text-3xl font-bold">
+                @if($plan['price'] == 0)
+                <span class="text-lg">Pay As You Go</span>
+                @else
                 <span class="text-base">£</span>
                 <template x-if="isMonthly">
-                  <span x-text=" {{ $plan['price'] }}"></span>/month
+                  <span x-text="{{ $plan['price'] }}"></span>/month
                 </template>
                 <template x-if="!isMonthly">
-                  <span x-text=" {{ $plan['price'] }} * 12"></span>/year
+                  <span x-text="{{ $plan['price'] }} * 12"></span>/year
                 </template>
+                @endif
               </p>
               <p class="border-b-2 my-4"></p>
               <div class="flex flex-col items-start  text-start grow">
                 @foreach (json_decode($plan['options']) as $option)
-                <p class="inline-flex"><svg fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+                <p class="grid grid-cols-[24px_1fr]">
+                  <svg class="grow" fill="#000000" width="24px" height="24px" viewBox="-2.16 -2.16 28.32 28.32" id="check-circle" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
                       <circle id="primary" cx="12" cy="12" r="10" style="fill: #ff943d;"></circle>
-                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #e64100;"></path>
+                      <path id="secondary" d="M11,16a1,1,0,0,1-.71-.29l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42l-5,5A1,1,0,0,1,11,16Z" style="fill: #fff;"></path>
                     </g>
-                  </svg><span>
-                    {{ $option }}</span></p>
+                  </svg>
+                  <span>{{ $option }}</span>
+                </p>
                 @endforeach
               </div>
               <p class="border-b-2 my-4"></p>
-              @include('components.subscribeTemplate')
+              @include('components.subscribeTemplate', ['rank' => $plan['name'], 'type' => $plan['type'] ] )
             </div>
             <!-- Plan Card - END-->
             @endif

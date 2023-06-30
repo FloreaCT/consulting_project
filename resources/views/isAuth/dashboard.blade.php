@@ -1,31 +1,6 @@
 @extends ('layout')
 
 @section('content')
-<div class="flex flex-col justify-end items-end col-span-2 text-end  pr-2">
-  <a class="relative flex justify-end text-end items-end" href="/portal/files">
-    <span class="px-2 py-1 rounded-xl text-white text-sm bg-[--c2]">0</span>
-    <svg class="ml-auto" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-51.2 -51.2 614.40 614.40" xml:space="preserve" fill="#000000" stroke="#000000" stroke-width="0.00512">
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-      <g id="SVGRepo_iconCarrier">
-        <path style="fill:#FFAA00;" d="M256,100.174c-27.619,0-50.087-22.468-50.087-50.087S228.381,0,256,0s50.087,22.468,50.087,50.087 S283.619,100.174,256,100.174z M256,33.391c-9.196,0-16.696,7.5-16.696,16.696s7.5,16.696,16.696,16.696 c9.196,0,16.696-7.5,16.696-16.696S265.196,33.391,256,33.391z"></path>
-        <path style="fill:#FF7705;" d="M256.006,0v33.394c9.194,0.003,16.69,7.5,16.69,16.693s-7.496,16.69-16.69,16.693v33.394 c27.618-0.004,50.081-22.469,50.081-50.087S283.624,0.004,256.006,0z"></path>
-        <path style="fill:#FFAA00;" d="M256,512c-46.043,0-83.478-37.435-83.478-83.478c0-9.228,7.467-16.696,16.696-16.696h133.565 c9.228,0,16.696,7.467,16.696,16.696C339.478,474.565,302.043,512,256,512z"></path>
-        <path style="fill:#FF7705;" d="M322.783,411.826h-66.777V512c46.042-0.004,83.473-37.437,83.473-83.478 C339.478,419.293,332.011,411.826,322.783,411.826z"></path>
-        <path style="fill:#FFC44D;" d="M439.652,348.113v-97.678C439.642,149,357.435,66.793,256,66.783 C154.565,66.793,72.358,149,72.348,250.435v97.678c-19.41,6.901-33.384,25.233-33.391,47.017 c0.01,27.668,22.419,50.075,50.087,50.085h333.913c27.668-0.01,50.077-22.417,50.087-50.085 C473.036,373.346,459.063,355.014,439.652,348.113z"></path>
-        <path style="fill:#FFAA00;" d="M439.652,348.113v-97.678C439.642,149,357.435,66.793,256,66.783v378.432h166.957 c27.668-0.01,50.077-22.417,50.087-50.085C473.036,373.346,459.063,355.014,439.652,348.113z"></path>
-        <path style="fill:#FFF3DB;" d="M155.826,267.13c-9.228,0-16.696-7.467-16.696-16.696c0-47.022,28.011-89.283,71.381-107.641 c8.446-3.587,18.294,0.326,21.88,8.836c3.62,8.51-0.358,18.294-8.836,21.88c-31.012,13.142-51.033,43.337-51.033,76.925 C172.522,259.663,165.054,267.13,155.826,267.13z"></path>
-      </g>
-    </svg>
-  </a>
-  <p class="text-xs">
-    {{ Auth::user()->name }}
-  </p>
-  <p class="text-xs">
-    {{ Auth::user()->email }}
-  </p>
-</div>
-
 <span :class="{ 'hidden': !isActive }"></span>
 <div :class="{ 'col-span-2': !isActive }">
 
@@ -36,7 +11,6 @@
       <!-- Heading - START -->
       <div class="my-8 text-center">
         <h1 class="font-bold text-3xl">Dashboard</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At, doloribus.</p>
       </div>
       <!-- Heading - END -->
     </div>
@@ -46,6 +20,46 @@
   <!-- Dashboard - START -->
   <div class="grid grid-cols-5 max-[1500px]:grid-cols-4 max-[1100px]:grid-cols-3 max-[800px]:grid-cols-2 grid-rows-auto py-6 gap-2">
 
+  
+  @if(substr(Auth::user()->controlstring, 2, 1) === '0')
+    <!-- Widget Start current plan / if tokens also show 2nd widget with how many tokens-->
+    <div class="widget col-span-1 max-[500px]:col-span-2 flex flex-col border-2 border-[#e6e6e6] rounded-lg" x-data="{ isReciving: false, isSending: true}">
+      <p class="text-center my-2">Subscription</p>
+      <!-- if token  -->
+     <div class="flex flex-col items-center justify-center">
+        @include('components.token')
+        <p  class="text-center font-bold">Top-Up</p>
+        <div class="flex justify-evenly flex-col w-[100%] items-center">
+        <p class="text-center">Tokens Left: <span>{{ substr(Auth::user()->controlstring, 7, 2) }}</span></p>
+
+
+        </div>
+     </div>
+      <!-- if "proper" plan -->
+
+    </div>
+    <!-- Widget END -->
+    @else
+    <!-- Widget Start current plan / if tokens also show 2nd widget with how many tokens-->
+    <div class="widget col-span-1 max-[500px]:col-span-2 flex flex-col border-2 border-[#e6e6e6] rounded-lg" x-data="{ isReciving: false, isSending: true}">
+      <p class="text-center my-2">Subscription</p>
+      <!-- if token  -->
+    
+      <!-- if "proper" plan -->
+      <div class="flex flex-col items-center justify-center">
+        @include('components.rank', ['cs' => '03'])
+        <p class="text-center font-bold">@include('components.rankname')</p>
+        <div class="flex justify-evenly flex-col w-[100%] items-center">
+         <p class="text-center">Start Period <span>25/06/2023</span></p> 
+         <p class="text-center">End Period: <span>25/07/23</span></p> 
+        </div>
+     </div>
+    </div>
+    <!-- Widget END -->
+    @endif
+
+
+    
     <!-- Widget Start transfers in progres  up/down-->
     <div class="widget col-span-1 max-[500px]:col-span-2 flex flex-col border-2 border-[#e6e6e6] rounded-lg" x-data="{ isReciving: false, isSending: true}">
       <p class="text-center my-2">Active Transmisions</p>
@@ -88,7 +102,7 @@
     
     <!-- Widget Start file transmision report   sent/received/failed-->
     <div class="widget col-span-2 flex flex-col border-2 border-[#e6e6e6] rounded-lg" x-data="{ isReciving: false, isSending: true}">
-      <p class="text-center my-2">Recent Contacts</p>
+      <p class="text-center my-2">Transmisions</p>
       <!--  -->
       <div class="flex flex-nowrap justify-evenly pb-2">
         <!-- Contact Card - START-->
@@ -238,6 +252,32 @@
     </div>
     <!-- Widget END -->
 
+    
+    <!-- Widget Start total sent/received-->
+    <div class="widget col-span-1 max-[500px]:col-span-2 flex flex-col border-2 border-[#e6e6e6] rounded-lg">
+      <p class="text-center my-2">Files</p>
+      <!--  -->
+      <div class="flex flex-nowrap justify-evenly">
+        <div class="flex flex-col p-1 items-center">
+          <p class="text-center text-sm font-bold">Received</p>
+          <div class="flex flex-nowrap overflow-hidden max-h-[100px] max-w-[100px]">
+            @include('components.receivedfile')
+          </div>
+          <p class="text-xl font-bold text-center pb-2">234</p>
+        </div>
+        <!--  -->
+        <div class="flex flex-col p-1 items-center">
+          <p class="text-center text-sm font-bold">Sent</p>
+          <div class="flex flex-nowrap overflow-hidden max-h-[100px] max-w-[100px]">
+            @include('components.sentfile')
+          </div>
+          <p class="text-xl font-bold text-center pb-2">45</p>
+        </div>
+      </div>
+      <!--  -->
+    </div>
+    <!-- Widget END -->
+
 
     <!-- Widget Start last 3 added contacts-->
     <div class="widget col-span-2 flex flex-col border-2 border-[#e6e6e6] rounded-lg" x-data="{ isReciving: false, isSending: true}">
@@ -247,8 +287,8 @@
         <!-- Contact Card - START-->
         <div class="flex flex-col basis-1/3 max-w-[200px]">
             <span class="mx-auto relative">
-              @include('components.usersvg')
-              <span class="absolute top-0 right-0"  title="Business Premium">@include('components.rank3b')</span>
+        <span class="block h-[50px] w-[50px]">@include('components.usersvg')</span>
+              <span class="absolute top-0 right-0"  title="Business Premium">@include('components.rank', ['cs' => '03'])</span>
             </span>
            
           <p class="text-sm text-center line-clamp-1 font-bold" title="User Name aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaa">User Name aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaa</p>
@@ -265,8 +305,8 @@
         <div class="flex flex-col basis-1/3 max-w-[200px]">
           
             <span class="mx-auto relative">
-              @include('components.usersvg')
-              <span class="absolute top-0 right-0" title="Business Starter">@include('components.rank1b')</span>
+        <span class="block h-[50px] w-[50px]">@include('components.usersvg')</span>
+              <span class="absolute top-0 right-0" title="Business Starter">@include('components.rank', ['cs' => '01'])</span>
             </span>
           <p class="text-sm text-center line-clamp-1 font-bold" title="User Name aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaa">User Name aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaa</p>
           <p class="text-xs text-center line-clamp-1" title="User Email">User Email</p>
@@ -281,8 +321,8 @@
         <div class="flex flex-col basis-1/3 max-w-[200px]">
           
             <span class="mx-auto relative">
-              @include('components.usersvg')
-              <span class="absolute top-0 right-0"  title="Personal Premium">@include('components.rank3')</span>
+        <span class="block h-[50px] w-[50px]">@include('components.usersvg')</span>
+              <span class="absolute top-0 right-0"  title="Personal Premium">@include('components.rank', ['cs' => '12'])</span>
             </span>
           <p class="text-sm text-center line-clamp-1 font-bold" title="User Name aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaa">User Name aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaa</p>
           <p class="text-xs text-center line-clamp-1" title="User Email">User Email</p>
@@ -295,43 +335,6 @@
         <!-- Contact Card - END-->
       </div>
       <!--  -->
-    </div>
-    <!-- Widget END -->
-
-
-    <!-- Widget Start current plan / if tokens also show 2nd widget with how many tokens-->
-    <div class="widget col-span-1 max-[500px]:col-span-2 flex flex-col border-2 border-[#e6e6e6] rounded-lg" x-data="{ isReciving: false, isSending: true}">
-      <p class="text-center my-2">Subscription</p>
-      <!-- if token  -->
-     <div class="flex flex-col items-center justify-center">
-        @include('components.token')
-        <p  class="text-center font-bold">Top-Up</p>
-        <div class="flex justify-evenly flex-col w-[100%] items-center">
-         <p class="text-center">Tokens Left: <span>5</span></p> 
-         <p class="text-center">Tokens Used: <span>100</span></p> 
-        </div>
-     </div>
-      <!-- if "proper" plan -->
-
-    </div>
-    <!-- Widget END -->
-
-    <!--'@@@@@@@@@@@@@@@@@@ show one or the other depending on subscription plan !@@@@@@@@@@@@@@@@@@@@@@@ -->
-
-    <!-- Widget Start current plan / if tokens also show 2nd widget with how many tokens-->
-    <div class="widget col-span-1 max-[500px]:col-span-2 flex flex-col border-2 border-[#e6e6e6] rounded-lg" x-data="{ isReciving: false, isSending: true}">
-      <p class="text-center my-2">Subscription</p>
-      <!-- if token  -->
-    
-      <!-- if "proper" plan -->
-      <div class="flex flex-col items-center justify-center">
-        @include('components.rank3')
-        <p  class="text-center font-bold">Personal Premium</p>
-        <div class="flex justify-evenly flex-col w-[100%] items-center">
-         <p class="text-center">Start Period <span>25/06/2023</span></p> 
-         <p class="text-center">End Period: <span>25/07/23</span></p> 
-        </div>
-     </div>
     </div>
     <!-- Widget END -->
 
